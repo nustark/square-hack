@@ -1,11 +1,34 @@
 import React, { Component } from 'react';
 import Box from '../Box/Box';
 import './List.css';
+import { process } from '@progress/kendo-data-query';
+import { Grid, GridColumn } from '@progress/kendo-react-grid';
+import { DropDownList } from '@progress/kendo-react-dropdowns';
+import '@progress/kendo-theme-material/dist/all.css';
+
+const customFilterOperators = {
+  'text': [
+      { text: 'grid.filterContainsOperator', operator: 'contains' }
+  ],
+  'numeric': [
+      { text: 'grid.filterGtOperator', operator: 'gt' }
+  ],
+  'date': [
+      { text: 'grid.filterAfterOperator', operator: 'gt' }
+  ]
+}
 
 class List extends Component {
   constructor(props) {
     super(props);
-    this.state = { orders: [] };
+    this.state = { 
+      orders: [],
+      // gridDataState: {
+      //   sort: [
+      //     { field: ""}
+      //   ]
+      // }
+    };
   }
 
   componentDidMount() {
@@ -16,24 +39,60 @@ class List extends Component {
     fetch("http://localhost:9000/square")
       .then(res => res.json())
       .then(data => {
-        console.log(data.orders);
-        this.setState({ orders: data.orders });
+        console.log("orders :", data.orders);
+        this.parseData(data.orders);
+        // this.parseOrders(data.orders);
+        // this.setState({ orders: data.orders });
       });
-
-    // fetch("http://localhost:9000/square")
-    //   .then(res => res.text())
-    //   .then(res => {
-    //     var orderNames = res.orders.map(order => {
-    //       return order.line_items[0].uid;
-    //     });
-    //     this.setState({ orders: orderNames });
-    //   });
   }
+  
+  parseData(orders) {
+    var parsedOrders = [];
+    for (const order of orders) {
+      parsedOrders.push({
+        "item": order.line_items[0].name,
+        "location_id": order.location_id,
+        "id": order.id,
+        "total": order.total_money.amount,
+        "created": order.created_at,
+        "type": order.fulfillments[0].type
+      });
+    }
+    console.log("parsed!: ", parsedOrders);
+    this.setState({ orders: parsedOrders });
+  }
+
+  // convertToMoney(value) {
+  //   var price = value.toString();
+  //   return '$' + price.slice(0, -2) + '.' + price.slice(-2);
+  // }
 
   render() {
     return (
       <div className="wrapper">
-        <Box orders={this.state.orders} />
+
+        {/* <Box orders={this.state.orders} /> */}
+
+        {/* <DropDownList
+          data={this.state.orders}
+          dataItemKey="id"
+          textField="id"
+        /> */}
+
+        <Grid
+          data={this.state.orders}
+          sortable={true}
+          filterable={true}
+          filterOperators={customFilterOperators}
+          >
+          <GridColumn field="id" title="Id" />
+          <GridColumn field="item" title="Item" />
+          <GridColumn field="total" title="Total" format="{0:c}" />
+          <GridColumn field="type" title="Type" />
+          <GridColumn field="location_id" title="Location ID" />
+          <GridColumn field="created" title="Ordered On" />
+        </Grid>
+
         <br></br>
         <div className="clear">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porttitor finibus rutrum. In hac habitasse platea dictumst. Aliquam erat volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam mollis lacus nec turpis euismod facilisis. Duis ac rhoncus nunc. Morbi nec turpis turpis. Donec mattis vitae eros nec vulputate. Duis pretium felis libero, eu lacinia mauris facilisis in.

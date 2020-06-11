@@ -1,8 +1,26 @@
 * {
-    text-align: left;
+  text-align: left;
 }
 
 .clear {
-    clear: both;
-    padding-top: 30px;
+  clear: both;
+  padding-top: 30px;
+}
+
+.k-grid-header {
+  background-color: rgb(202, 146, 165) !important;
+}
+
+.k-widget {
+  background-color: #282c35 !important;
+  color: white !important;
+}
+
+.k-grid-content {
+  color: white !important;
+  background-color: #282c35 !important;
+}
+
+.k-grid-table .k-master-row:hover {
+  color: rgb(202, 146, 165);
 }

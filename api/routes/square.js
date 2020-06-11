@@ -16,7 +16,16 @@ var apiInstance = new SquareConnect.OrdersApi();
 
 var locationId = '8P9KZXQ0S5DV2';
 
-var body = new SquareConnect.BatchRetrieveOrdersRequest(['rYMfVsyRLWH9QKF9g4LW3CurLuLZY', '1flRulKv0namRJkg7pqTHiqecyVZY']);
+orderIds = [
+  "RHgkoDpf7ICjigGjIpMbQ0VgOQbZY",
+  "1flRulKv0namRJkg7pqTHiqecyVZY",
+  "RHgkoDpf7ICjigGjIpMbQ0VgOQbZY",
+  "rYMfVsyRLWH9QKF9g4LW3CurLuLZY",
+  "TYqtAnFdt40tATPXLNKGkTALhW7YY"
+];
+
+// var body = new SquareConnect.BatchRetrieveOrdersRequest(['rYMfVsyRLWH9QKF9g4LW3CurLuLZY', '1flRulKv0namRJkg7pqTHiqecyVZY']);
+var body = new SquareConnect.BatchRetrieveOrdersRequest(orderIds);
 
 router.get('/', function(req, res, next) {
   // res.send('API is working properly!');
