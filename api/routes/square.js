@@ -17,11 +17,13 @@ var apiInstance = new SquareConnect.OrdersApi();
 var locationId = '8P9KZXQ0S5DV2';
 
 orderIds = [
-  "RHgkoDpf7ICjigGjIpMbQ0VgOQbZY",
   "1flRulKv0namRJkg7pqTHiqecyVZY",
   "RHgkoDpf7ICjigGjIpMbQ0VgOQbZY",
   "rYMfVsyRLWH9QKF9g4LW3CurLuLZY",
-  "TYqtAnFdt40tATPXLNKGkTALhW7YY"
+  "TYqtAnFdt40tATPXLNKGkTALhW7YY",
+  "jMQdAzY2RbVRRIs4YPfL2txzn7TZY",
+  "9Z8nIcoQXuU7aS2fdujAmKelBwYZY",
+  "3050LOsO7EjUozSP1p5jY3ISozLZY"
 ];
 
 // var body = new SquareConnect.BatchRetrieveOrdersRequest(['rYMfVsyRLWH9QKF9g4LW3CurLuLZY', '1flRulKv0namRJkg7pqTHiqecyVZY']);

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Box from '../Box/Box';
-import './List.css';
-import { process } from '@progress/kendo-data-query';
-import { Grid, GridColumn } from '@progress/kendo-react-grid';
-import { DropDownList } from '@progress/kendo-react-dropdowns';
+import { filterBy } from '@progress/kendo-data-query';
+import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
+import { ExcelExport } from '@progress/kendo-react-excel-export';
+
 import '@progress/kendo-theme-material/dist/all.css';
+import './List.css';
 
 const customFilterOperators = {
   'text': [
@@ -23,11 +23,17 @@ class List extends Component {
     super(props);
     this.state = { 
       orders: [],
-      // gridDataState: {
-      //   sort: [
-      //     { field: ""}
-      //   ]
-      // }
+      gridDataState: {
+        sort: [
+          { field: "id", dir: "asc" }
+        ]
+      },
+      filter: {
+        logic: "and",
+        filters: [
+          { field: "type", operator: "contains", value: ""}
+        ]
+      }
     };
   }
 
@@ -62,15 +68,14 @@ class List extends Component {
     this.setState({ orders: parsedOrders });
   }
 
-  // convertToMoney(value) {
-  //   var price = value.toString();
-  //   return '$' + price.slice(0, -2) + '.' + price.slice(-2);
-  // }
+  _export;
+  export = () => {
+    this._export.save();
+  }
 
   render() {
     return (
       <div className="wrapper">
-
         {/* <Box orders={this.state.orders} /> */}
 
         {/* <DropDownList
@@ -78,20 +83,40 @@ class List extends Component {
           dataItemKey="id"
           textField="id"
         /> */}
-
-        <Grid
-          data={this.state.orders}
-          sortable={true}
+        <ExcelExport
+          data={filterBy(this.state.orders, this.state.filter)}
+          ref={exporter => this._export = exporter}
           filterable={true}
-          filterOperators={customFilterOperators}
+        >
+          <Grid
+            data={filterBy(this.state.orders, this.state.filter)}
+            sortable={true}
+            filterable={true}
+            filter={this.state.filter}
+            filterOperators={customFilterOperators}
+            onFilterChange={(e) => {
+              this.setState({
+                filter: e.filter
+              });
+            }}
           >
-          <GridColumn field="id" title="Id" />
-          <GridColumn field="item" title="Item" />
-          <GridColumn field="total" title="Total" format="{0:c}" />
-          <GridColumn field="type" title="Type" />
-          <GridColumn field="location_id" title="Location ID" />
-          <GridColumn field="created" title="Ordered On" />
-        </Grid>
+            <GridToolbar>
+              <button
+                title="Export Excel"
+                className="k-button k-primary"
+                onClick={this.export}
+              >
+                Export
+              </button>
+            </GridToolbar>
+            <GridColumn field="id" title="Id" />
+            <GridColumn field="item" title="Item" />
+            <GridColumn field="total" title="Total" format="{0:c}" />
+            <GridColumn field="type" title="Type" />
+            <GridColumn field="location_id" title="Location ID" />
+            <GridColumn field="created" title="Ordered On" />
+          </Grid>
+        </ExcelExport>
 
         <br></br>
         <div className="clear">

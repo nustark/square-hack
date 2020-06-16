@@ -24,3 +24,8 @@
 .k-grid-table .k-master-row:hover {
   color: rgb(202, 146, 165);
 }
+
+
+.k-button .k-button-icon .k-clear-button-visible {
+  display: none;
+}

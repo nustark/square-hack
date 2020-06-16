@@ -34,6 +34,10 @@
   /* max-width: 850px; */
 }
 
+.k-button .k-button-icon .k-clear-button-visible {
+  display: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
